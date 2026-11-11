@@ -1,0 +1,56 @@
+name: hermes-microduck
+version: 0.1.0
+description: >-
+  Let Hermes drive Microduck, the open-source bipedal duck robot from Pollen Robotics / Hugging Face, in a
+  MuJoCo simulation running its real trained RL policies (walk, turn, sit, kick). Look through the duck's head camera,
+  walk, sit, and line up and kick a ball at a goal - behind a pre_tool_call safety interlock (speed / duration caps,
+  arena geofence, e-stop latch only a human can clear). Ships a no-dependency mock duck for CI and quick tries.
+author: Arca Computer (arcabotai)
+license: MIT
+homepage: https://github.com/arcabotai/hermes-microduck
+manifest_version: 2
+requires_hermes: ">=0.21.6"
+tags: [robotics, mujoco, reinforcement-learning, simulation, safety, microduck, pollen-robotics, huggingface]
+provides_tools:
+  - duck_status
+  - duck_look
+  - duck_walk
+  - duck_turn
+  - duck_kick_ball
+  - duck_kick
+  - duck_sit
+  - duck_stand
+  - duck_head
+  - duck_stop
+provides_hooks:
+  - pre_tool_call
+config_schema:
+  backend:
+    type: str
+    choices: [mock, sim]
+    default: mock
+    label: Backend
+    description: "mock = built-in kinematic duck (no dependencies); sim = the MuJoCo + ONNX sim server in sim/ (real Microduck policies)"
+  sim:
+    type: dict
+    label: Sim server
+    description: "url of sim/server.py and the request timeout"
+    default: {url: "http://127.0.0.1:8765", timeout_s: 90}
+  safety:
+    type: dict
+    label: Safety interlock
+    description: "max_forward_mps, max_backward_mps, max_turn_rps, max_duration_s, default_duration_s, max_head_rad, geofence{x_min,x_max,y_min,y_max,margin_m}"
+    default:
+      max_forward_mps: 0.25
+      max_backward_mps: 0.2
+      max_turn_rps: 1.0
+      max_duration_s: 8.0
+      default_duration_s: 2.0
+      max_head_rad: 0.6
+      geofence: {enabled: true, x_min: -1.5, x_max: 1.5, y_min: -1.5, y_max: 1.5, margin_m: 0.2}
+      blocked_log_max: 500
+  camera:
+    type: dict
+    label: Camera
+    description: "width, height, return_mode (path|inline), keep_last"
+    default: {width: 640, height: 480, return_mode: path, keep_last: 20}

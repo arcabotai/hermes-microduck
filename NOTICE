@@ -1,0 +1,17 @@
+hermes-microduck
+Copyright 2026 Arca Computer, Inc.
+
+The plugin code at the repository root is released under the MIT License (LICENSE).
+
+sim/microduck_sim.py and sim/server.py port the control loop of Pollen Robotics' Microduck playground
+(https://huggingface.co/spaces/pollen-robotics/microduck-simulator, app/src/game/game.js and constants.js:
+observation layout, default pose, action scaling, 50 Hz loop, kick/sit/fall-recovery state machine).
+That work is Copyright Pollen Robotics and licensed under the Apache License, Version 2.0; the files in sim/
+are therefore also distributed under the Apache License, Version 2.0 (http://www.apache.org/licenses/LICENSE-2.0),
+with modifications by Arca Computer, Inc. (headless Python/onnxruntime port, HTTP API, ball-approach controller,
+turn controller, replay renderer).
+
+The Microduck robot model (MJCF, meshes) and the trained ONNX policies are NOT included in this repository.
+sim/fetch_assets.py downloads them from the Hugging Face Space above; they come from
+https://github.com/pollen-robotics/microduck and https://github.com/pollen-robotics/microduck_rl (Apache-2.0).
+Microduck is a Pollen Robotics / Hugging Face project; this plugin is an independent community integration.
