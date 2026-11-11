@@ -54,6 +54,8 @@ The interlock fails closed: handlers refuse to act unless the hook vetted the ca
 if the sim can't be reached, motion is refused rather than attempted blind. Refusals go to `/duck log` and
 `blocked.jsonl`.
 
+!["Run at full speed for 30 seconds": blocked by the 8 s cap, then by the geofence](docs/img/interlock.png)
+
 ## Quickstart
 
 ```bash
