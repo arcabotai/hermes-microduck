@@ -106,6 +106,21 @@ happens in the replay.
 | `safety.geofence` | arena ±1.5 m, margin 0.2 m |
 | `camera` | 640×480, `return_mode: path` (or `inline`) |
 
+## Disclosure
+
+* **Network:** in `sim` mode the plugin makes plain-HTTP requests to the sim server you configure (`sim.url`, default
+  `http://127.0.0.1:8765`, i.e. `sim/server.py` on your own machine). `mock` mode (the default) makes no network
+  connections. No telemetry.
+* **Setup download:** `sim/fetch_assets.py`, which you run yourself once, downloads Pollen's Microduck MJCF, STL meshes and
+  ONNX policies (~7 MB) from the official `pollen-robotics/microduck-simulator` Hugging Face Space, pinned to commit
+  `efedf47f4d4a` (override with `MICRODUCK_SPACE_REV`), into `sim/assets/`. Nothing is downloaded by the plugin at runtime.
+* **Background process:** `sim/server.py` is a long-running process that you start yourself; the plugin never spawns it.
+* **Files:** head-camera snapshots, the blocked-call audit log (`blocked.jsonl`) and the e-stop latch (`estop.json`) under
+  the plugin's data dir. Nothing is read outside it.
+* **Credentials:** none. No `requires_env`, no shell commands.
+* **Physical effects:** this drives a simulated robot only. The interlock limits this plugin's own tools; it does not stop
+  other tools (terminal, code execution) from calling the sim server or editing the limits in `config.yaml`.
+
 ## Development
 
 ```bash
